@@ -1,0 +1,35 @@
+{
+  "name": "pf-travel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "tech choice\r angular2 - too big, not justifiable for a simple app like this, if there would be a significant chance that the project would grow I would rewrite it, not too much time wasted\r jquery is enough\r fuzzy search plugin\r   fusejs.io\r typescript\r scss\r npm\r webpack?",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "prod": "NODE_ENV=production webpack -p",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Simon Kvasnicka",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^2.5.2",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^6.0.0",
+    "vue-router": "^3.0.1",
+    "fuse.js": "^3.2.0",
+    "node-dijkstra": "1.1.3"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.9",
+    "ts-loader": "^2.3.7",
+    "typescript": "^2.6.2",
+    "vue-loader": "^12.2.2",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^2.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/6finger/pf-travel/"
+  }
+}

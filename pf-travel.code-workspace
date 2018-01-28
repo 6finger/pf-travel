@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.vue": "vue"
+		},
+		"tslint.autoFixOnSave": true
+	}
+}
