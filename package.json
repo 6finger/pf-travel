@@ -2,7 +2,7 @@
   "name": "pf-travel",
   "version": "1.0.0",
   "private": true,
-  "description": "tech choice\r angular2 - too big, not justifiable for a simple app like this, if there would be a significant chance that the project would grow I would rewrite it, not too much time wasted\r jquery is enough\r fuzzy search plugin\r   fusejs.io\r typescript\r scss\r npm\r webpack?",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
