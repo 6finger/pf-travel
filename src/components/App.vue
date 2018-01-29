@@ -28,7 +28,6 @@ import data from '../response.json';
 import * as Graph from "node-dijkstra";
 
 @Component({
-  el: "#app",
   components: {
     SearchSelectComponent,
     SearchModeToggleComponent,
