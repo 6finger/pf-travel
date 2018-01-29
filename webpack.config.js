@@ -39,6 +39,16 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.scss$/,
+        use: [{
+          loader: "style-loader" // creates style nodes from JS strings
+        }, {
+          loader: "css-loader" // translates CSS into CommonJS
+        }, {
+          loader: "sass-loader" // compiles Sass to CSS
+        }]
       }
     ]
   },
@@ -52,8 +62,8 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     // settings for codeanywhere.com
-    public: 'pf-travel-kvasnickasimon748145.codeanyapp.com',
-    host: "0.0.0.0"
+    // public: 'pf-travel-kvasnickasimon748145.codeanyapp.com',
+    // host: "0.0.0.0"
   },
   performance: {
     hints: false

@@ -17,18 +17,16 @@
 
 <script lang="ts">
 
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import SearchSelectComponent from "./SearchSelect.vue";
 import SearchModeToggleComponent from "./SearchModeToggle.vue";
 import SearchDirectionToggleComponent from "./SearchDirectionToggle.vue";
 import SearchResultsComponent from "./SearchResults.vue";
 import { ResponseType, DealType, SearchModeType } from "../types";
+import { getDealPrice, getDealTime } from '../helpers';
 import data from '../response.json';
 import * as Graph from "node-dijkstra";
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { getDealPrice, getDealTime } from '../helpers';
 
-export type DealsMapType = { [key: string]: { [key: string]: DealType } };
-  
 @Component({
   el: "#app",
   components: {
@@ -46,7 +44,7 @@ export default class AppComponent extends Vue {
   get deals(): DealType[] { return (<ResponseType>data).deals; }  
   get departures(): string[] { return this.getDistinctCitiesFromDeals('departure'); } 
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
-  dealsMap: DealsMapType;
+  dealsMap: { [key: string]: { [key: string]: DealType } };
   editing: boolean = true;
  
   getDistinctCitiesFromDeals(propertyName: string): string[] {
@@ -111,7 +109,10 @@ export default class AppComponent extends Vue {
 
 </script>
 
-<style>
+<style lang="scss">
+@import '~sierra-library';
+
+// .someclass { color: $some-variable; }
 .hidden {
   display: none !important;
 }

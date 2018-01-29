@@ -11,8 +11,3 @@ npm run build
 all assets will be in /dist folder
 run the app by opening index.html
 
-
-test:
-London -> Rome
-fastest: [ "London", "Paris", "Madrid", "Geneva", "Rome" ]
-cheapest: [ "London", "Amsterdam", "Brussels", "Geneva", "Rome" ]
