@@ -3,6 +3,9 @@
     <h1>Search</h1>
     <search-select-component v-model="cityFrom" :options="departures"/>
     <search-select-component v-model="cityTo" :options="arrivals"/>
+    <search-mode-toggle-component v-model="searchMode"/>
+    mode: {{searchMode}}
+    <br/>
     path: {{path}}
   </div>
 </template>
@@ -10,7 +13,8 @@
 <script lang="ts">
 
 import SearchSelectComponent from "./SearchSelect.vue";
-import { ResponseType, DealType } from "../types";
+import SearchModeToggleComponent from "./SearchModeToggle.vue";
+import { ResponseType, DealType, SearchModeType } from "../types";
 import data from '../response.json';
 import * as Graph from "node-dijkstra";
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
@@ -18,12 +22,14 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 @Component({
   el: "#app",
   components: {
-    SearchSelectComponent
+    SearchSelectComponent,
+    SearchModeToggleComponent
   }
 })
 export default class AppComponent extends Vue {
   @Prop() cityFrom: string = '';
   @Prop() cityTo: string = '';
+  @Prop() searchMode: SearchModeType = SearchModeType.Price;
   @Prop() departures: string[] = (<ResponseType>data).deals.map((deal: DealType) => {
       return deal.departure;
     }).filter((x, i, a) => a.indexOf(x) == i).sort();
@@ -32,7 +38,6 @@ export default class AppComponent extends Vue {
     }).filter((x, i, a) => a.indexOf(x) == i).sort();
  
   get path():any {
-    var mode = 'price'; // price / time
     var dealsMap: { [key: string]: { [key: string]: DealType } } = {};
     var graphMap: { [key: string]: { [key: string]: number}} = {};
 
@@ -41,7 +46,7 @@ export default class AppComponent extends Vue {
       dealsMap[deal.departure][deal.arrival] = deal;
 
       var weight = 0;
-      if (mode === 'price') {
+      if (this.searchMode === SearchModeType.Price) {
         weight = deal.cost * (deal.discount ? deal.discount / 100 : 1);
       } else {
         weight = parseFloat(deal.duration.h) * 60 + parseFloat(deal.duration.m);

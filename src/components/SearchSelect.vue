@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import * as _ from "lodash";
 import { DealType } from "../types";
 import * as Fuse from 'fuse.js';
 
