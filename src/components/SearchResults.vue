@@ -14,8 +14,8 @@
     <div>
       summary:
       <span>{{searchResultsSummary.price}} curr</span>,
-      <span>{{minutesToHoursAndMinutes(searchResultsSummary.time).h}} h</span>
-      <span>{{minutesToHoursAndMinutes(searchResultsSummary.time).m}} m</span>
+      <span>{{searchResultsSummary.time.h}} h</span>
+      <span>{{searchResultsSummary.time.m}} m</span>
     </div>
   </div>
 </template>
@@ -25,27 +25,38 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { DealType } from "../types";
 import { getDealPrice, getDealTime, minutesToHoursAndMinutes } from '../helpers';
   
-export type SummaryType = { price: number, time: number };
+export type PriceAndTimeType = { price: number, time: number };
+export type SummaryType = { price: number, time: {h: number, m: number} };
 
 @Component
 export default class SearchResultsComponent extends Vue {
   @Prop() results: DealType[];
 
-  minutesToHoursAndMinutes = minutesToHoursAndMinutes;
   getDealPrice = getDealPrice;
   
   get searchResultsSummary(): SummaryType {
-    return this.results.map((deal: DealType): SummaryType => {
+    let summary: SummaryType = {
+      price: 0,
+      time: {h: 0, m: 0}
+    };
+    if (!this.results || !this.results.length) {
+      return summary;
+    }
+    let priceAndTime: PriceAndTimeType = this.results.map((deal: DealType): PriceAndTimeType => {
       return {
         price: getDealPrice(deal),
         time: getDealTime(deal)
       }
-    }).reduce((acc: SummaryType, next: SummaryType): SummaryType => {
+    }).reduce((acc: PriceAndTimeType, next: PriceAndTimeType): PriceAndTimeType => {
       return {
         price: acc.price + next.price,
         time: acc.time + next.time
       }
     });
+    return {
+      price: priceAndTime.price,
+      time: minutesToHoursAndMinutes(priceAndTime.time)
+    }
   }
   
 }
