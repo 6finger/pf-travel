@@ -50,7 +50,10 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    // settings for codeanywhere.com
+    public: 'pf-travel-kvasnickasimon748145.codeanyapp.com',
+    host: "0.0.0.0"
   },
   performance: {
     hints: false
