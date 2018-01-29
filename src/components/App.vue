@@ -40,25 +40,15 @@ export default class AppComponent extends Vue {
   @Prop() cityTo: string = '';
   @Prop() searchMode: SearchModeType = SearchModeType.Price;
   
-  get deals(): DealType[] { return (<ResponseType>data).deals; }
-  get dealsMap(): DealsMapType { return this.getDealsMap(); }
-  
+  get deals(): DealType[] { return (<ResponseType>data).deals; }  
   get departures(): string[] { return this.getDistinctCitiesFromDeals('departure'); } 
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
+  dealsMap: DealsMapType;  
  
   getDistinctCitiesFromDeals(propertyName: string): string[] {
     return this.deals.map((deal: DealType) => {
       return (<any>deal)[propertyName];
     }).filter((x, i, a) => a.indexOf(x) == i).sort();
-  }
-  
-  getDealsMap() {
-    var dealsMap: DealsMapType = {};
-    this.deals.forEach((deal: DealType) => {
-      dealsMap[deal.departure] = dealsMap[deal.departure] || {};
-      dealsMap[deal.departure][deal.arrival] = deal;
-    });
-    return dealsMap;
   }
   
   changeDirection() {
@@ -68,26 +58,28 @@ export default class AppComponent extends Vue {
   }
   
   get path(): string[] {
-    var graphMap: { [key: string]: { [key: string]: number}} = {};
+    var graphMap: { [key: string]: { [key: string]: number } } = {};
+    this.dealsMap = {};
     this.deals.forEach((deal: DealType) => {
-      var weight = 0;
-      if (this.searchMode === SearchModeType.Price) {
-        weight = getDealPrice(deal);
-      } else {
-        weight = getDealTime(deal);
-      }
       graphMap[deal.departure] = graphMap[deal.departure] || {};
-      graphMap[deal.departure][deal.arrival] = weight;
+      this.dealsMap[deal.departure] = this.dealsMap[deal.departure] || {};
+      
+      let weight = this.searchMode === SearchModeType.Price ? getDealPrice(deal) : getDealTime(deal);
+      let currentWeight = graphMap[deal.departure][deal.arrival];
+      if (currentWeight == null || weight < currentWeight) {
+        graphMap[deal.departure][deal.arrival] = weight;
+        this.dealsMap[deal.departure][deal.arrival] = deal;
+      }
     });
 
     var g = new Graph(graphMap);
-    return g.shortestPath((<any>this).cityFrom, (<any>this).cityTo);
+    return g.shortestPath(this.cityFrom, this.cityTo);
   }
   
   get searchResults(): DealType[] {
     let path = this.path;
     let results: DealType[] = [];
-    path && path.forEach((city: string, index: number) => {
+    this.dealsMap && path && path.forEach((city: string, index: number) => {
       if (index !== path.length - 1) {
         results.push(this.dealsMap[city][path[index+1]]);
       }

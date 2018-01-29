@@ -33,7 +33,8 @@ export default class SearchSelectComponent extends Vue {
   get id() {
     return this.label.toLowerCase();
   }
-  get matches(): string[] {
+
+  get fuse(): Fuse {
     var settings = {
       shouldSort: true,
       findAllMatches: true,
@@ -43,8 +44,11 @@ export default class SearchSelectComponent extends Vue {
       maxPatternLength: 32,
       minMatchCharLength: 1
     };
-    var fuse = new Fuse(this.options, settings);
-    return fuse.search<number>(this.value).map((i: number) => {
+    return new Fuse(this.options, settings);
+  }
+
+  get matches(): string[] {
+    return this.fuse.search<number>(this.value).map((i: number) => {
       return this.options[i];
     });
   }
@@ -53,7 +57,4 @@ export default class SearchSelectComponent extends Vue {
 </script>
 
 <style>
-.greeting {
-  font-size: 20px;
-}
 </style>

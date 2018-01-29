@@ -1,7 +1,7 @@
 import { DealType } from './types';
 
 export function getDealPrice(deal: DealType): number {
-  return deal.cost * (deal.discount ? deal.discount / 100 : 1);
+  return deal.cost * (1 - (deal.discount ? deal.discount / 100 : 0));
 }
 
 export function getDealTime(deal: DealType): number {

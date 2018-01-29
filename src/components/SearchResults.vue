@@ -1,13 +1,14 @@
 <template>
   <div>
     <div v-for="deal in results" :key="deal.reference">
+      <span>{{deal.transport}}</span>
       <span>{{deal.departure}}</span>
       &gt;
       <span>{{deal.arrival}}</span>
-      <span>{{deal.cost}} curr</span>,
+      <span>{{getDealPrice(deal)}} curr</span>,
       <span>{{deal.duration.h}} h</span>
-      <span>{{deal.duration.m}} m</span>
-      
+      <span>{{deal.duration.m}} m</span>,
+      <span>ref {{deal.reference}}</span>
     </div>
     <br/>
     <div>
@@ -29,6 +30,9 @@ export type SummaryType = { price: number, time: number };
 @Component
 export default class SearchResultsComponent extends Vue {
   @Prop() results: DealType[];
+
+  minutesToHoursAndMinutes = minutesToHoursAndMinutes;
+  getDealPrice = getDealPrice;
   
   get searchResultsSummary(): SummaryType {
     return this.results.map((deal: DealType): SummaryType => {
@@ -42,10 +46,6 @@ export default class SearchResultsComponent extends Vue {
         time: acc.time + next.time
       }
     });
-  }
-  
-  minutesToHoursAndMinutes(minutes: number) {
-    return minutesToHoursAndMinutes(minutes);
   }
   
 }
