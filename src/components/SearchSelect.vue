@@ -1,6 +1,7 @@
 <template>
   <div>
-    From: <input v-model.trim="value" type="text">
+    <label :for="id">{{label}}:</label>
+    <input v-model.trim="value" type="text" :id="id">
     <div class="matches">
       <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="match">
         {{match}}
@@ -18,17 +19,20 @@ import * as Fuse from 'fuse.js';
 export default class SearchSelectComponent extends Vue {
   @Prop() value: string;
   @Prop() options: string[];
+  @Prop() label: string;
 
   @Watch('value')
   onPropertyChanged(value: string, oldValue: string) {
     this.$emit('input', value);
-    // this.findMatches();
   }
 
   selectMatch(match: string) {
     this.value = match;
   }
 
+  get id() {
+    return this.label.toLowerCase();
+  }
   get matches(): string[] {
     var settings = {
       shouldSort: true,
@@ -45,13 +49,6 @@ export default class SearchSelectComponent extends Vue {
     });
   }
 
-
-findMatches() {
-    // _.debounce(() => {
-    //   
-    // }, 500);
-    
-  }
 }
 </script>
 
