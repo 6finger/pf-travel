@@ -3,6 +3,7 @@
     <h1>Search</h1>
     <search-select-component v-model="cityFrom" :options="departures"/>
     <search-select-component v-model="cityTo" :options="arrivals"/>
+    <search-direction-toggle-component @change="changeDirection"/>
     <search-mode-toggle-component v-model="searchMode"/>
     mode: {{searchMode}}
     <br/>
@@ -14,6 +15,7 @@
 
 import SearchSelectComponent from "./SearchSelect.vue";
 import SearchModeToggleComponent from "./SearchModeToggle.vue";
+import SearchDirectionToggleComponent from "./SearchDirectionToggle.vue";
 import { ResponseType, DealType, SearchModeType } from "../types";
 import data from '../response.json';
 import * as Graph from "node-dijkstra";
@@ -23,7 +25,8 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
   el: "#app",
   components: {
     SearchSelectComponent,
-    SearchModeToggleComponent
+    SearchModeToggleComponent,
+    SearchDirectionToggleComponent
   }
 })
 export default class AppComponent extends Vue {
@@ -37,6 +40,12 @@ export default class AppComponent extends Vue {
       return deal.arrival;
     }).filter((x, i, a) => a.indexOf(x) == i).sort();
  
+  changeDirection() {
+    let from = this.cityFrom;
+    this.cityFrom = this.cityTo;
+    this.cityTo = from;
+  }
+  
   get path():any {
     var dealsMap: { [key: string]: { [key: string]: DealType } } = {};
     var graphMap: { [key: string]: { [key: string]: number}} = {};
