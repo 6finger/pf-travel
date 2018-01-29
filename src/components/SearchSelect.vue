@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div v-click-outside="close">
     <label :for="id">{{label}}:</label>
-    <input v-model.trim="value" type="text" :id="id">
-    <div class="matches">
+    <input v-model.trim="value" type="text" :id="id" @input="open" @focus="open">
+    <div class="matches" :class="{hidden: !isOpen}">
       <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="match">
         {{match}}
       </div>
@@ -20,6 +20,7 @@ export default class SearchSelectComponent extends Vue {
   @Prop() value: string;
   @Prop() options: string[];
   @Prop() label: string;
+  opened: boolean = false;
 
   @Watch('value')
   onPropertyChanged(value: string, oldValue: string) {
@@ -28,6 +29,19 @@ export default class SearchSelectComponent extends Vue {
 
   selectMatch(match: string) {
     this.value = match;
+    this.close();
+  }
+
+  close() {
+    this.opened = false;
+  }
+
+  open() {
+    this.opened = true;
+  }
+
+  get isOpen(): boolean {
+    return this.opened;
   }
 
   get id() {
@@ -57,4 +71,7 @@ export default class SearchSelectComponent extends Vue {
 </script>
 
 <style>
+.hidden {
+  display: none !important;
+}
 </style>

@@ -1,14 +1,17 @@
 <template>
   <div>
-    <h1>Search</h1>
-    <search-select-component v-model="cityFrom" :options="departures" label="From"/>
-    <search-select-component v-model="cityTo" :options="arrivals" label="To"/>
-    <search-direction-toggle-component @change="changeDirection"/>
-    <search-mode-toggle-component v-model="searchMode"/>
-    <br/>
-    path: {{path}}
-    <br/>
-    <search-results-component :results="searchResults" />
+    <h1>TripSorter</h1>
+    <div :class="{hidden: !isEditing}">
+      <search-select-component v-model="cityFrom" :options="departures" label="From"/>
+      <search-select-component v-model="cityTo" :options="arrivals" label="To"/>
+      <search-direction-toggle-component @change="changeDirection"/>
+      <search-mode-toggle-component v-model="searchMode"/>
+      <input type="button" value="Search" @click="search"/>
+    </div>
+    <div :class="{hidden: isEditing}">
+      <search-results-component :results="searchResults" />
+      <input type="button" value="Reset" @click="reset"/>
+    </div>
   </div>
 </template>
 
@@ -43,7 +46,8 @@ export default class AppComponent extends Vue {
   get deals(): DealType[] { return (<ResponseType>data).deals; }  
   get departures(): string[] { return this.getDistinctCitiesFromDeals('departure'); } 
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
-  dealsMap: DealsMapType;  
+  dealsMap: DealsMapType;
+  editing: boolean = true;
  
   getDistinctCitiesFromDeals(propertyName: string): string[] {
     return this.deals.map((deal: DealType) => {
@@ -56,8 +60,24 @@ export default class AppComponent extends Vue {
     this.cityFrom = this.cityTo;
     this.cityTo = from;
   }
+
+  get isEditing(): boolean {
+    return this.editing;
+  }
+
+  search() {
+    this.editing = false;
+  }
+
+  reset() {
+    this.editing = true;
+  }
   
   get path(): string[] {
+    if (!this.cityFrom || !this.cityTo || this.cityFrom === this.cityTo) {
+      return [];
+    }
+
     var graphMap: { [key: string]: { [key: string]: number } } = {};
     this.dealsMap = {};
     this.deals.forEach((deal: DealType) => {
@@ -92,4 +112,7 @@ export default class AppComponent extends Vue {
 </script>
 
 <style>
+.hidden {
+  display: none !important;
+}
 </style>
