@@ -1,4 +1,4 @@
-export enum TransportType {
+export const enum TransportType {
   Train = "train",
   Bus = "bus",
   Car = "car"
@@ -20,4 +20,9 @@ export type DealType = {
 export type ResponseType = {
   currency: string;
   deals: DealType[];
+}
+
+export const enum SearchModeType {
+  Price = "price",
+  Time = "time"
 }

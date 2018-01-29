@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server",
     "build": "webpack",
     "prod": "NODE_ENV=production webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,7 +27,8 @@
     "typescript": "^2.6.2",
     "vue-loader": "^12.2.2",
     "vue-template-compiler": "^2.5.13",
-    "webpack": "^2.7.0"
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "repository": {
     "type": "git",
