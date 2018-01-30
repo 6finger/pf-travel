@@ -5,6 +5,7 @@
       {{errorMessage}}
     </div>
     <input v-model.trim="value" type="text" :id="id" @input="open" @focus="open">
+    <input type="button" value="Clear" @click="value = ''"/>
     <div :class="{hidden: !isOpen}" class="matches">
       <small v-if="showNoMatches" class="match">no matches</small>
       <small v-if="showLastMatches" class="match">recently selected</small>
@@ -21,7 +22,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { filterDisctinct } from '../helpers/filter';
-import { getMatches } from '../helpers/fuzzySearch';
+import { FuzzySearch } from '../helpers/fuzzySearch';
 
 @Component
 export default class SearchSelectComponent extends Vue {
@@ -31,6 +32,7 @@ export default class SearchSelectComponent extends Vue {
   @Prop() errorMessage: string;
   opened: boolean = false;
   history: string[] = [];
+  fuzzySearch: FuzzySearch = new FuzzySearch();
 
   @Watch('value')
   onPropertyChanged(value: string, oldValue: string) {
@@ -74,9 +76,9 @@ export default class SearchSelectComponent extends Vue {
   get id() {
     return this.label.toLowerCase();
   }
-
+  
   get matches(): string[] {
-    return getMatches(this.options, this.value);
+    return this.fuzzySearch.getMatches(this.options, this.value);
   }
 
 }
