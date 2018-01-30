@@ -2,8 +2,8 @@
   <div>
     <h1>TripSorter</h1>
     <div :class="{hidden: !isEditing}">
-      <search-select-component v-model="cityFrom" :options="departures" label="From"/>
-      <search-select-component v-model="cityTo" :options="arrivals" label="To"/>
+      <search-select-component v-model="cityFrom" :options="departures" :errorMessage="cityFromErrorMessage" label="From" @input="cityFromErrorMessage && validate()"/>
+      <search-select-component v-model="cityTo" :options="arrivals" :errorMessage="cityToErrorMessage" label="To" @input="cityToErrorMessage && validate()"/>
       <search-direction-toggle-component @change="changeDirection"/>
       <search-mode-toggle-component v-model="searchMode"/>
       <input type="button" value="Search" @click="search"/>
@@ -46,6 +46,8 @@ export default class AppComponent extends Vue {
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
   dealsMap: { [key: string]: { [key: string]: DealType } };
   editing: boolean = true;
+  cityFromErrorMessage: string = '';
+  cityToErrorMessage: string = '';
  
   getDistinctCitiesFromDeals(propertyName: string): string[] {
     return this.deals.map((deal: DealType) => {
@@ -63,8 +65,28 @@ export default class AppComponent extends Vue {
     return this.editing;
   }
 
+  get valid(): boolean {
+    return !this.cityFromErrorMessage && !this.cityToErrorMessage;
+  }
+  
+  validate() {
+    this.cityFromErrorMessage =
+      !this.cityFrom ? 'error - required' :
+      this.departures.indexOf(this.cityFrom) == -1 ? 'error - unknown city' :
+      '';
+    this.cityToErrorMessage =
+      !this.cityTo ? 'error - required' :
+      this.arrivals.indexOf(this.cityTo) == -1 ? 'error - unknown city' :
+      !this.cityFromErrorMessage && this.cityFrom === this.cityTo ? 'error - same cities' :
+      '';
+    
+    return this.valid;
+  }
+  
   search() {
-    this.editing = false;
+    if (this.validate()) {
+      this.editing = false;
+    }
   }
 
   reset() {
@@ -72,7 +94,7 @@ export default class AppComponent extends Vue {
   }
   
   get path(): string[] {
-    if (!this.cityFrom || !this.cityTo || this.cityFrom === this.cityTo) {
+    if (!this.valid) {
       return [];
     }
 

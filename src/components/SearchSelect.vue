@@ -1,6 +1,9 @@
 <template>
-  <div v-click-outside="close">
+  <div v-click-outside="close" :class="{error: errorMessage}">
     <label :for="id">{{label}}:</label>
+    <div v-if="errorMessage">
+      {{errorMessage}}
+    </div>
     <input v-model.trim="value" type="text" :id="id" @input="open" @focus="open">
     <div :class="{hidden: !isOpen}" class="matches">
       <small v-if="showNoMatches" class="match">no matches</small>
@@ -25,6 +28,7 @@ export default class SearchSelectComponent extends Vue {
   @Prop() value: string;
   @Prop() options: string[];
   @Prop() label: string;
+  @Prop() errorMessage: string;
   opened: boolean = false;
   history: string[] = [];
 
