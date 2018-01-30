@@ -20,8 +20,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import * as Fuse from 'fuse.js';
 import { filterDisctinct } from '../helpers/filter';
+import { getMatches } from '../helpers/fuzzySearch';
 
 @Component
 export default class SearchSelectComponent extends Vue {
@@ -75,23 +75,8 @@ export default class SearchSelectComponent extends Vue {
     return this.label.toLowerCase();
   }
 
-  get fuse(): Fuse {
-    var settings = {
-      shouldSort: true,
-      findAllMatches: true,
-      threshold: 0.6,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1
-    };
-    return new Fuse(this.options, settings);
-  }
-
   get matches(): string[] {
-    return this.fuse.search<number>(this.value).map((i: number) => {
-      return this.options[i];
-    });
+    return getMatches(this.options, this.value);
   }
 
 }
