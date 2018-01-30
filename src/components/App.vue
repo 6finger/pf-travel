@@ -9,7 +9,7 @@
       <input type="button" value="Search" @click="search"/>
     </div>
     <div :class="{hidden: isEditing}">
-      <search-results-component :results="searchResults" />
+      <search-results-component :results="searchResults" :currency="currency" />
       <input type="button" value="Reset" @click="reset"/>
     </div>
   </div>
@@ -23,7 +23,7 @@ import SearchModeToggleComponent from "./SearchModeToggle.vue";
 import SearchDirectionToggleComponent from "./SearchDirectionToggle.vue";
 import SearchResultsComponent from "./SearchResults.vue";
 import { ResponseType, DealType, SearchModeType } from "../types";
-import { getDealPrice, getDealTime } from '../helpers';
+import { getDealPrice, getDealTime, filterDisctinct } from '../helpers';
 import data from '../response.json';
 import * as Graph from "node-dijkstra";
 
@@ -40,7 +40,8 @@ export default class AppComponent extends Vue {
   @Prop() cityTo: string = '';
   @Prop() searchMode: SearchModeType = SearchModeType.Price;
   
-  get deals(): DealType[] { return (<ResponseType>data).deals; }  
+  get deals(): DealType[] { return (<ResponseType>data).deals; }
+  get currency(): string { return (<ResponseType>data).currency; }
   get departures(): string[] { return this.getDistinctCitiesFromDeals('departure'); } 
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
   dealsMap: { [key: string]: { [key: string]: DealType } };
@@ -49,7 +50,7 @@ export default class AppComponent extends Vue {
   getDistinctCitiesFromDeals(propertyName: string): string[] {
     return this.deals.map((deal: DealType) => {
       return (<any>deal)[propertyName];
-    }).filter((x, i, a) => a.indexOf(x) == i).sort();
+    }).filter(filterDisctinct).sort();
   }
   
   changeDirection() {

@@ -5,7 +5,7 @@
       <span>{{deal.departure}}</span>
       &gt;
       <span>{{deal.arrival}}</span>
-      <span>{{getDealPrice(deal)}} curr</span>,
+      <span>{{getDealPrice(deal)}} {{currency}}</span>,
       <span>{{deal.duration.h}} h</span>
       <span>{{deal.duration.m}} m</span>,
       <span>ref {{deal.reference}}</span>
@@ -13,7 +13,7 @@
     <br/>
     <div>
       summary:
-      <span>{{searchResultsSummary.price}} curr</span>,
+      <span>{{searchResultsSummary.price}} {{currency}}</span>,
       <span>{{searchResultsSummary.time.h}} h</span>
       <span>{{searchResultsSummary.time.m}} m</span>
     </div>
@@ -31,6 +31,7 @@ export type SummaryType = { price: number, time: {h: number, m: number} };
 @Component
 export default class SearchResultsComponent extends Vue {
   @Prop() results: DealType[];
+  @Prop() currency: string;
 
   getDealPrice = getDealPrice;
   

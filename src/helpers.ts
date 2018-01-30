@@ -15,3 +15,7 @@ export function minutesToHoursAndMinutes(minutes: number): {h: number, m: number
     m: minutes - hours*60
   }
 }
+
+export function filterDisctinct(x: any, i: number, a: any[]): boolean {
+  return a.indexOf(x) == i;
+}
