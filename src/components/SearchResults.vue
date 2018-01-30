@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-for="deal in results" :key="deal.reference">
+    <div v-if="!results.length" >
+      no connection found
+    </div>
+    <div v-if="results.length" v-for="deal in results" :key="deal.reference">
       <span>{{deal.transport}}</span>
       <span>{{deal.departure}}</span>
       &gt;
@@ -11,7 +14,7 @@
       <span>ref {{deal.reference}}</span>
     </div>
     <br/>
-    <div>
+    <div v-if="results.length">
       summary:
       <span>{{searchResultsSummary.price}} {{currency}}</span>,
       <span>{{searchResultsSummary.time.h}} h</span>
