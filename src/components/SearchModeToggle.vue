@@ -1,9 +1,17 @@
 <template>
-  <div>
-    <input v-model="searchMode" type="radio" name="search-mode" id="price" value="price">
-    <label for="price">Cheapest</label>
-    <input v-model="searchMode" type="radio" name="search-mode" id="time" value="time">
-    <label for="time">Fastest</label>
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="radio">
+        <input v-model="searchMode" type="radio" name="search-mode" id="price" value="price">
+        <label for="price">Cheapest</label>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="radio">
+        <input v-model="searchMode" type="radio" name="search-mode" id="time" value="time">
+        <label for="time">Fastest</label>
+      </div>
+    </div>
   </div>
 </template>
 

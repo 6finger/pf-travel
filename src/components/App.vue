@@ -1,18 +1,39 @@
 <template>
-  <div>
-    <h1>TripSorter</h1>
-    <div :class="{hidden: !isEditing}">
-      <search-select-component v-model="cityFrom" :options="departures" :errorMessage="cityFromErrorMessage" label="From" @input="cityFromErrorMessage && validate()"/>
-      <search-select-component v-model="cityTo" :options="arrivals" :errorMessage="cityToErrorMessage" label="To" @input="cityToErrorMessage && validate()"/>
-      <search-direction-toggle-component @change="changeDirection"/>
-      <search-mode-toggle-component v-model="searchMode"/>
-      <input type="button" value="Search" @click="search"/>
-    </div>
-    <div :class="{hidden: isEditing}">
-      <search-results-component :results="searchResults" :currency="currency" />
-      <input type="button" value="Reset" @click="reset"/>
-    </div>
-  </div>
+  <main>
+
+    <section>
+      <div class="container-small text-center">
+        <h1 class="text-huge">Trip Sorter</h1>
+      </div>
+    </section>
+
+    <section :class="{hidden: !isEditing}" class="background-dark">
+      <div class="container-small">
+        <search-select-component v-model="cityFrom" :options="departures" :errorMessage="cityFromErrorMessage" label="From" @input="cityFromErrorMessage && validate()"/>
+        <search-select-component v-model="cityTo" :options="arrivals" :errorMessage="cityToErrorMessage" label="To" @input="cityToErrorMessage && validate()"/>
+        <search-mode-toggle-component v-model="searchMode"/>
+        <button @click="search" class="button button-primary">
+          <i class="fa fa-search fa-lg"></i>
+          &nbsp;Search
+        </button>
+        <button @click="changeDirection" class="button button-outlined">
+          <i class="fa fa-retweet fa-lg"></i>
+          &nbsp;Switch cities
+        </button>
+      </div>
+    </section>
+
+    <section :class="{hidden: isEditing}" class="background-dark">
+      <div class="container-small">
+        <search-results-component :results="searchResults" :currency="currency" />
+        <button @click="reset" class="button button-red">
+          <i class="fa fa-refresh fa-lg"></i>
+          Reset
+        </button>
+      </div>
+    </section>
+
+  </main>
 </template>
 
 <script lang="ts">
@@ -20,7 +41,6 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import SearchSelectComponent from "./SearchSelect.vue";
 import SearchModeToggleComponent from "./SearchModeToggle.vue";
-import SearchDirectionToggleComponent from "./SearchDirectionToggle.vue";
 import SearchResultsComponent from "./SearchResults.vue";
 import { ResponseType, DealType, SearchModeType } from "../types";
 import { getDealPrice, getDealTime } from '../helpers/format';
@@ -32,7 +52,6 @@ import data from '../response.json';
   components: {
     SearchSelectComponent,
     SearchModeToggleComponent,
-    SearchDirectionToggleComponent,
     SearchResultsComponent
   }
 })

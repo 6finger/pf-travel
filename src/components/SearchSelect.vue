@@ -1,11 +1,17 @@
 <template>
   <div v-click-outside="close" :class="{error: errorMessage}">
-    <label :for="id">{{label}}:</label>
-    <div v-if="errorMessage">
-      {{errorMessage}}
+    <label :for="id" class="label">{{label}}</label>
+    <div class="form-collapse">
+      <div :class="{error: errorMessage}" class="input item item-main">
+        <input v-model.trim="searchText" type="text" :id="id" @input="open" @focus="open" ref="searchInput" placeholder="Please enter a city" class="input full-width">
+      </div>
+      <button @click="clear" class="item button" :class="{'button-red': errorMessage, 'button-primary': !errorMessage}">
+        <i v-if="!searchText" class="fa fa-chevron-down fa-lg"></i>
+        <i v-if="searchText" class="fa fa-close fa-lg"></i>
+      </button>
     </div>
-    <input v-model.trim="searchText" type="text" :id="id" @input="open" @focus="open">
-    <input type="button" value="Clear" @click="searchText = ''"/>
+    <p v-if="errorMessage" class="text-error text-small">{{errorMessage}}</p>
+
     <div :class="{hidden: !isOpen}" class="matches">
       <small v-if="showNoMatches" class="match">no matches</small>
       <small v-if="showLastMatches" class="match">recently selected</small>
@@ -16,6 +22,7 @@
         {{match}}
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -30,7 +37,7 @@ export default class SearchSelectComponent extends Vue {
   @Prop() options: string[];
   @Prop() label: string;
   @Prop() errorMessage: string;
-  
+
   searchText: string = this.value;  
   opened: boolean = false;
   history: string[] = [];
@@ -66,6 +73,11 @@ export default class SearchSelectComponent extends Vue {
     this.searchText = match;
     this.addToHistory(match);
     this.close();
+  }
+
+  clear() {
+    this.searchText = '';
+    (<any>this).$refs.searchInput.focus();
   }
 
   close() {
