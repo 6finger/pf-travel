@@ -23,9 +23,10 @@ import SearchModeToggleComponent from "./SearchModeToggle.vue";
 import SearchDirectionToggleComponent from "./SearchDirectionToggle.vue";
 import SearchResultsComponent from "./SearchResults.vue";
 import { ResponseType, DealType, SearchModeType } from "../types";
-import { getDealPrice, getDealTime, filterDisctinct } from '../helpers';
+import { getDealPrice, getDealTime } from '../helpers/format';
+import { filterDisctinct } from '../helpers/filter';
+import { findTrip } from '../helpers/pathfinding';
 import data from '../response.json';
-import * as Graph from "node-dijkstra";
 
 @Component({
   components: {
@@ -44,7 +45,6 @@ export default class AppComponent extends Vue {
   get currency(): string { return (<ResponseType>data).currency; }
   get departures(): string[] { return this.getDistinctCitiesFromDeals('departure'); } 
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
-  dealsMap: { [key: string]: { [key: string]: DealType } };
   editing: boolean = true;
   cityFromErrorMessage: string = '';
   cityToErrorMessage: string = '';
@@ -93,38 +93,8 @@ export default class AppComponent extends Vue {
     this.editing = true;
   }
   
-  get path(): string[] {
-    if (!this.valid) {
-      return [];
-    }
-
-    var graphMap: { [key: string]: { [key: string]: number } } = {};
-    this.dealsMap = {};
-    this.deals.forEach((deal: DealType) => {
-      graphMap[deal.departure] = graphMap[deal.departure] || {};
-      this.dealsMap[deal.departure] = this.dealsMap[deal.departure] || {};
-      
-      let weight = this.searchMode === SearchModeType.Price ? getDealPrice(deal) : getDealTime(deal);
-      let currentWeight = graphMap[deal.departure][deal.arrival];
-      if (currentWeight == null || weight < currentWeight) {
-        graphMap[deal.departure][deal.arrival] = weight;
-        this.dealsMap[deal.departure][deal.arrival] = deal;
-      }
-    });
-
-    var g = new Graph(graphMap);
-    return g.shortestPath(this.cityFrom, this.cityTo);
-  }
-  
   get searchResults(): DealType[] {
-    let path = this.path;
-    let results: DealType[] = [];
-    this.dealsMap && path && path.forEach((city: string, index: number) => {
-      if (index !== path.length - 1) {
-        results.push(this.dealsMap[city][path[index+1]]);
-      }
-    });
-    return results;
+    return this.editing ? [] : findTrip(this.deals, this.cityFrom, this.cityTo, this.searchMode);
   }
   
 }
