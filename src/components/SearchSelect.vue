@@ -4,8 +4,8 @@
     <div v-if="errorMessage">
       {{errorMessage}}
     </div>
-    <input v-model.trim="value" type="text" :id="id" @input="open" @focus="open">
-    <input type="button" value="Clear" @click="value = ''"/>
+    <input v-model.trim="searchText" type="text" :id="id" @input="open" @focus="open">
+    <input type="button" value="Clear" @click="searchText = ''"/>
     <div :class="{hidden: !isOpen}" class="matches">
       <small v-if="showNoMatches" class="match">no matches</small>
       <small v-if="showLastMatches" class="match">recently selected</small>
@@ -30,13 +30,20 @@ export default class SearchSelectComponent extends Vue {
   @Prop() options: string[];
   @Prop() label: string;
   @Prop() errorMessage: string;
+  
+  searchText: string = this.value;  
   opened: boolean = false;
   history: string[] = [];
   fuzzySearch: FuzzySearch = new FuzzySearch();
 
   @Watch('value')
-  onPropertyChanged(value: string, oldValue: string) {
-    this.$emit('input', value);
+  onValueChanged(newValue: string) {
+    this.searchText = newValue;
+  }
+
+  @Watch('searchText')
+  onPropertyChanged(newValue: string) {
+    this.$emit('input', newValue);
   }
   
   get lastMatches(): string[] {
@@ -44,11 +51,11 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get showLastMatches(): boolean {
-    return !this.value && (!this.matches || !this.matches.length) && !!this.lastMatches.length;
+    return !this.searchText && (!this.matches || !this.matches.length) && !!this.lastMatches.length;
   }
   
   get showNoMatches(): boolean {
-    return !!this.value && (!this.matches || !this.matches.length);
+    return !!this.searchText && (!this.matches || !this.matches.length);
   }
   
   addToHistory(match: string) {
@@ -56,7 +63,7 @@ export default class SearchSelectComponent extends Vue {
   }
 
   selectMatch(match: string) {
-    this.value = match;
+    this.searchText = match;
     this.addToHistory(match);
     this.close();
   }
@@ -78,7 +85,7 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get matches(): string[] {
-    return this.fuzzySearch.getMatches(this.options, this.value);
+    return this.fuzzySearch.getMatches(this.options, this.searchText);
   }
 
 }
