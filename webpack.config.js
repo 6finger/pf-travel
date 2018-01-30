@@ -1,6 +1,7 @@
 
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path');
+var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -62,9 +63,20 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     // settings for codeanywhere.com
-    // public: 'pf-travel-kvasnickasimon748145.codeanyapp.com',
-    // host: "0.0.0.0"
+    public: 'pf-travel-kvasnickasimon748145.codeanyapp.com',
+    host: "0.0.0.0"
   },
+  plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: 'index.html',
+        to: 'index.html',
+        transform: function(content) {
+          return Buffer.from(content.toString().replace(/\.\/dist\//g, ''));
+        }
+      }
+    ])
+  ],
   performance: {
     hints: false
   },
