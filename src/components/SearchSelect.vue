@@ -1,24 +1,25 @@
 <template>
-  <div v-click-outside="close" :class="{error: errorMessage}">
+  <div v-click-outside="close" :class="{error: errorMessage, 'show-items': showItems}">
     <label :for="id" class="label">{{label}}</label>
     <div class="form-collapse">
       <div :class="{error: errorMessage}" class="input item item-main">
         <input v-model.trim="searchText" type="text" :id="id" @input="open" @focus="open" ref="searchInput" placeholder="Please enter a city" class="input full-width">
       </div>
-      <button @click="clear" class="item button" :class="{'button-red': errorMessage, 'button-primary': !errorMessage}">
-        <i v-if="!searchText" class="fa fa-chevron-down fa-lg"></i>
+      <button @click="onInputButtonClick" class="item button" :class="{'button-red': errorMessage, 'button-primary': !errorMessage}">
+        <i v-if="!searchText && !isOpen" class="fa fa-chevron-down fa-lg"></i>
+        <i v-if="!searchText && isOpen" class="fa fa-chevron-up fa-lg"></i>
         <i v-if="searchText" class="fa fa-close fa-lg"></i>
       </button>
     </div>
     <p v-if="errorMessage" class="text-error text-small">{{errorMessage}}</p>
-    <div :class="{hidden: !isOpen}" class="matches">
-      <small v-if="showNoMatches" class="match">no matches</small>
-      <small v-if="showLastMatches" class="match">recently selected</small>
-      <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="match">
+    <div :class="{hidden: !showItems}" class="matches border-right border-left border-bottom">
+      <div v-if="showNoMatches" class="select-item border-bottom text-gray">no matches</div>
+      <div v-if="showLastMatches" class="select-item border-bottom text-gray">recently selected</div>
+      <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="select-item border-bottom match">
         {{match}}
       </div>
-      <small v-if="showAll && showLastMatches" class="match">all</small>
-      <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="match">
+      <div v-if="showAll && showLastMatches" class="select-item border-bottom text-gray">all</div>
+      <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="select-item border-bottom match">
         {{match}}
       </div>
     </div>
@@ -57,7 +58,7 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get showAll(): boolean {
-    return !! (!this.searchText && this.matches && this.matches.length);
+    return !! (!this.searchText && this.hasMatches);
   }
 
   get showLastMatches(): boolean {
@@ -65,11 +66,23 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get showNoMatches(): boolean {
-    return !! (this.searchText && !this.hasPerfectMatch && (!this.matches || !this.matches.length));
+    return !! (this.searchText && !this.hasPerfectMatch && !this.hasMatches);
+  }
+
+  get hasMatches(): boolean {
+    return !! (this.matches && this.matches.length);
+  }
+
+  get showItems(): boolean {
+    return this.isOpen && (this.showNoMatches || this.showLastMatches || this.hasMatches);
   }
 
   get hasPerfectMatch(): boolean {
     return this.options.indexOf(this.searchText) != -1;
+  }
+
+  onInputButtonClick() {
+    !this.searchText && this.isOpen ? this.close() : this.clear();
   }
   
   addToHistory(match: string) {
@@ -84,7 +97,7 @@ export default class SearchSelectComponent extends Vue {
 
   clear() {
     this.searchText = '';
-    (<any>this).$refs.searchInput.focus();
+    !this.isOpen ? this.open() : this.focusInput();
   }
 
   close() {
@@ -92,7 +105,12 @@ export default class SearchSelectComponent extends Vue {
   }
 
   open() {
+    !this.isOpen && this.focusInput();
     this.opened = true;
+  }
+
+  focusInput() {
+    (<any>this).$refs.searchInput.focus();
   }
 
   get isOpen(): boolean {
@@ -115,4 +133,35 @@ export default class SearchSelectComponent extends Vue {
 .item.button {
   width: 4em;
 }
+.matches {
+  border-radius: 0 0 3px 3px;
+}
+.select-item:last-child {
+  border-bottom: none;
+}
+.select-item {
+  padding: 5px 10px;
+  background-color: #34495e;  
+}
+.select-item.text-gray {
+  background-color: #2b3d4e;
+}
+.select-item.match {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  &:hover, &:focus {
+    background-color: #46637f;
+  }
+}
+.show-items .form-collapse {
+  margin-bottom: 0;
+  .item:first-child {
+    border-bottom-left-radius: 0;
+  }
+  .item:last-child {
+    border-bottom-right-radius: 0;
+  }
+}
+
 </style>
