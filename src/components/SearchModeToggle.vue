@@ -1,7 +1,7 @@
 <template>
-  <div class="row">
+  <div class="row compact form-collapse">
     <div class="col-xs-6">
-      <div class="radio">
+      <div class="radio pull-right">
         <input v-model="searchMode" type="radio" name="search-mode" id="price" value="price">
         <label for="price">Cheapest</label>
       </div>
@@ -32,5 +32,8 @@ export default class SearchModeToggleComponent extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+.radio {
+  margin-right: 0;
+}
 </style>

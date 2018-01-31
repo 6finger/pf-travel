@@ -106,8 +106,8 @@ export default class SearchSelectComponent extends Vue {
 }
 </script>
 
-<style>
-.hidden {
-  display: none !important;
+<style lang="scss">
+.item.button {
+  width: 4em;
 }
 </style>

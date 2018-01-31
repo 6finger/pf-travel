@@ -7,29 +7,39 @@
       </div>
     </section>
 
-    <section :class="{hidden: !isEditing}" class="background-dark">
+    <section :class="{hidden: !isEditing}" class="background-dark mid-section">
       <div class="container-small">
         <search-select-component v-model="cityFrom" :options="departures" :errorMessage="cityFromErrorMessage" label="From" @input="cityFromErrorMessage && validate()"/>
         <search-select-component v-model="cityTo" :options="arrivals" :errorMessage="cityToErrorMessage" label="To" @input="cityToErrorMessage && validate()"/>
         <search-mode-toggle-component v-model="searchMode"/>
-        <button @click="search" class="button button-primary">
-          <i class="fa fa-search fa-lg"></i>
-          &nbsp;Search
-        </button>
-        <button @click="changeDirection" class="button button-outlined">
-          <i class="fa fa-retweet fa-lg"></i>
-          &nbsp;Switch cities
-        </button>
+        <div class="row compact">
+          <div class="col-xs-6">
+            <button @click="search" class="button button-block button-primary">
+              <i class="fa fa-search fa-lg"></i>
+              &nbsp;Search
+            </button>
+          </div>
+          <div class="col-xs-6">
+            <button @click="changeDirection" class="button button-block button-outlined">
+              <i class="fa fa-retweet fa-lg"></i>
+              &nbsp;Switch
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section :class="{hidden: isEditing}" class="background-dark">
+    <section :class="{hidden: isEditing}" class="background-dark mid-section">
       <div class="container-small">
         <search-results-component :results="searchResults" :currency="currency" />
-        <button @click="reset" class="button button-red">
-          <i class="fa fa-refresh fa-lg"></i>
-          Reset
-        </button>
+        <div class="row">
+          <div class="col-xs-12">
+            <button @click="reset" class="button button-block button-primary">
+              <i class="fa fa-refresh fa-lg"></i>
+              &nbsp;Search again
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -123,8 +133,35 @@ export default class AppComponent extends Vue {
 <style lang="scss">
 @import '~sierra-library';
 
-// .someclass { color: $some-variable; }
 .hidden {
   display: none !important;
 }
+label.label {
+  margin-bottom: 0.2em;
+}
+.text-huge {
+  margin-bottom: 0.6em;
+}
+.mid-section {
+  padding: 1em 0;
+}
+.button-block {
+  width: 100%;
+}
+.text-error {
+  margin-top: 0;
+}
+.error .form-collapse {
+  margin-bottom: 0.2em;
+}
+.button {
+  border-radius: 3px;
+}
+.row.compact *[class^='col']:not(:first-child) {
+  padding-left: 7px;
+}
+.row.compact *[class^='col']:not(:last-child) {
+  padding-right: 7px;
+}
+
 </style>
