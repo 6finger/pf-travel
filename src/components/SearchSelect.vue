@@ -11,7 +11,7 @@
         <i v-if="searchText" class="fa fa-close fa-lg"></i>
       </button>
     </div>
-    <p v-if="errorMessage" class="text-error text-small">{{errorMessage}}</p>
+    <p v-if="errorMessage && !showItems" class="text-error text-small">{{errorMessage}}</p>
     <div :class="{hidden: !showItems}" class="matches border-right border-left border-bottom">
       <div v-if="showNoMatches" class="select-item border-bottom text-gray">no matches</div>
       <div v-if="showLastMatches" class="select-item border-bottom text-gray">recently selected</div>

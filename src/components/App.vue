@@ -9,8 +9,8 @@
 
     <section :class="{hidden: !isEditing}" class="background-dark mid-section">
       <div class="container-small">
-        <search-select-component v-model="cityFrom" :options="departures" :errorMessage="cityFromErrorMessage" label="From" @input="cityFromErrorMessage && validate()"/>
-        <search-select-component v-model="cityTo" :options="arrivals" :errorMessage="cityToErrorMessage" label="To" @input="cityToErrorMessage && validate()"/>
+        <search-select-component v-model="cityFrom" :options="departures" :errorMessage="cityFromErrorMessage" label="From" @input="!valid && validate()"/>
+        <search-select-component v-model="cityTo" :options="arrivals" :errorMessage="cityToErrorMessage" label="To" @input="!valid && validate()"/>
         <search-mode-toggle-component v-model="searchMode"/>
         <div class="row compact">
           <div class="col-xs-6">
