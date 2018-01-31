@@ -65,7 +65,11 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get showNoMatches(): boolean {
-    return !! (this.searchText && (!this.matches || !this.matches.length));
+    return !! (this.searchText && !this.hasPerfectMatch && (!this.matches || !this.matches.length));
+  }
+
+  get hasPerfectMatch(): boolean {
+    return this.options.indexOf(this.searchText) != -1;
   }
   
   addToHistory(match: string) {
@@ -100,6 +104,7 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get matches(): string[] {
+    if (this.hasPerfectMatch) return [];
     return this.searchText ? this.fuzzySearch.getMatches(this.options, this.searchText) : this.options;
   }
 
