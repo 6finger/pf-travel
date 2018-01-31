@@ -102,13 +102,13 @@ export default class AppComponent extends Vue {
   
   validate() {
     this.cityFromErrorMessage =
-      !this.cityFrom ? 'error - required' :
-      this.departures.indexOf(this.cityFrom) == -1 ? 'error - unknown city' :
+      !this.cityFrom ? 'Please select a city.' :
+      this.departures.indexOf(this.cityFrom) == -1 ? 'Unknown city.' :
       '';
     this.cityToErrorMessage =
-      !this.cityTo ? 'error - required' :
-      this.arrivals.indexOf(this.cityTo) == -1 ? 'error - unknown city' :
-      !this.cityFromErrorMessage && this.cityFrom === this.cityTo ? 'error - same cities' :
+      !this.cityTo ? 'Please select a city.' :
+      this.arrivals.indexOf(this.cityTo) == -1 ? 'Unknown city.' :
+      !this.cityFromErrorMessage && this.cityFrom === this.cityTo ? 'Both cities can\'t be the same.' :
       '';
     
     return this.valid;
