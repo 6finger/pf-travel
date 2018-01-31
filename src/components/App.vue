@@ -146,8 +146,6 @@ label.label {
 }
 .mid-section {
   padding: 1em 0;
-  // box-shadow: inset 0 0 25px #246476;
-  // box-shadow: inset 0 -10px 10px -10px rgba(0,0,0,0.4), inset 0 10px 10px -10px rgba(0,0,0,0.4);
 }
 .button-block {
   width: 100%;
@@ -167,7 +165,6 @@ label.label {
 .row.compact *[class^='col']:not(:last-child) {
   padding-right: 7px;
 }
-
 html, body, main {
   height: 100%;
 }

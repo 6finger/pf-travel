@@ -183,7 +183,6 @@ export default class SearchSelectComponent extends Vue {
 }
 .show-items .form-collapse {
   box-shadow: 0 0 10px 3px rgba(0,0,0,0.4);
-  
   .item:first-child {
     border-bottom-left-radius: 0;
   }
