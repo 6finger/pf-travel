@@ -1,28 +1,36 @@
 <template>
   <div v-click-outside="close" :class="{error: errorMessage, 'show-items': showItems}">
+
     <label :for="id" class="label">{{label}}</label>
+    
     <div class="form-collapse">
+    
       <div :class="{error: errorMessage}" class="input item item-main">
         <input v-model.trim="searchText" type="text" :id="id" @input="open" @focus="open" ref="searchInput" placeholder="Please enter a city" class="input full-width">
       </div>
+      
+      <div v-if="showItems" class="matches border-right border-left border-bottom">
+        <div v-if="showNoMatches" class="select-item border-bottom text-gray">No matches found</div>
+        <div v-if="showLastMatches" class="select-item border-bottom text-gray">Recently selected</div>
+        <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="select-item border-bottom match">
+          {{match}}
+        </div>
+        <div v-if="showAll && showLastMatches" class="select-item border-bottom text-gray">All cities</div>
+        <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="select-item border-bottom match">
+          {{match}}
+        </div>
+      </div>
+
       <button @click="onInputButtonClick" class="item button" :class="{'button-red': errorMessage, 'button-primary': !errorMessage}">
         <i v-if="!searchText && !isOpen" class="fa fa-chevron-down fa-lg"></i>
         <i v-if="!searchText && isOpen" class="fa fa-chevron-up fa-lg"></i>
         <i v-if="searchText" class="fa fa-close fa-lg"></i>
       </button>
-      <div v-if="showItems" class="matches border-right border-left border-bottom">
-        <div v-if="showNoMatches" class="select-item border-bottom text-gray">no matches</div>
-        <div v-if="showLastMatches" class="select-item border-bottom text-gray">recently selected</div>
-        <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="select-item border-bottom match">
-          {{match}}
-        </div>
-        <div v-if="showAll && showLastMatches" class="select-item border-bottom text-gray">all</div>
-        <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="select-item border-bottom match">
-          {{match}}
-        </div>
-      </div>
+
     </div>
+    
     <p v-if="errorMessage" class="text-error text-small">{{errorMessage}}</p>
+  
   </div>
 </template>
 
