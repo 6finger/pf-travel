@@ -10,19 +10,19 @@
         <i v-if="!searchText && isOpen" class="fa fa-chevron-up fa-lg"></i>
         <i v-if="searchText" class="fa fa-close fa-lg"></i>
       </button>
-    </div>
-    <p v-if="errorMessage && !showItems" class="text-error text-small">{{errorMessage}}</p>
-    <div :class="{hidden: !showItems}" class="matches border-right border-left border-bottom">
-      <div v-if="showNoMatches" class="select-item border-bottom text-gray">no matches</div>
-      <div v-if="showLastMatches" class="select-item border-bottom text-gray">recently selected</div>
-      <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="select-item border-bottom match">
-        {{match}}
+      <div v-if="showItems" class="matches border-right border-left border-bottom">
+        <div v-if="showNoMatches" class="select-item border-bottom text-gray">no matches</div>
+        <div v-if="showLastMatches" class="select-item border-bottom text-gray">recently selected</div>
+        <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="select-item border-bottom match">
+          {{match}}
+        </div>
+        <div v-if="showAll && showLastMatches" class="select-item border-bottom text-gray">all</div>
+        <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="select-item border-bottom match">
+          {{match}}
+        </div>
       </div>
-      <div v-if="showAll && showLastMatches" class="select-item border-bottom text-gray">all</div>
-      <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="select-item border-bottom match">
-        {{match}}
-      </div>
     </div>
+    <p v-if="errorMessage" class="text-error text-small">{{errorMessage}}</p>
   </div>
 </template>
 
@@ -131,10 +131,26 @@ export default class SearchSelectComponent extends Vue {
 
 <style lang="scss">
 .item.button {
-  width: 4em;
+  width: 3.3em;
+  padding: 10px 15px;
 }
 .matches {
   border-radius: 0 0 3px 3px;
+  position: absolute;
+  top: 100%;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  &::after {
+    content: '';
+    height: 1em;
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: inset 0 6px 5px -4px rgba(0, 0, 0, 0.4);
+  }
 }
 .select-item:last-child {
   border-bottom: none;
@@ -154,8 +170,12 @@ export default class SearchSelectComponent extends Vue {
     background-color: #46637f;
   }
 }
+.form-collapse {
+  position: relative;
+}
 .show-items .form-collapse {
-  margin-bottom: 0;
+  box-shadow: 0 0 10px 3px rgba(0,0,0,0.4);
+  
   .item:first-child {
     border-bottom-left-radius: 0;
   }
