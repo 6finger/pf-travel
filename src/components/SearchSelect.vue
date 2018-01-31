@@ -11,18 +11,17 @@
       </button>
     </div>
     <p v-if="errorMessage" class="text-error text-small">{{errorMessage}}</p>
-
     <div :class="{hidden: !isOpen}" class="matches">
       <small v-if="showNoMatches" class="match">no matches</small>
       <small v-if="showLastMatches" class="match">recently selected</small>
-      <div v-if="showLastMatches" v-for="match in lastMatches" :key="match" @click="selectMatch(match)" class="match">
+      <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="match">
         {{match}}
       </div>
+      <small v-if="showAll && showLastMatches" class="match">all</small>
       <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="match">
         {{match}}
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -57,12 +56,16 @@ export default class SearchSelectComponent extends Vue {
     return this.history.filter(filterDisctinct).slice(0, 3);
   }
   
+  get showAll(): boolean {
+    return !! (!this.searchText && this.matches && this.matches.length);
+  }
+
   get showLastMatches(): boolean {
-    return !this.searchText && (!this.matches || !this.matches.length) && !!this.lastMatches.length;
+    return !! (!this.searchText && this.lastMatches.length);
   }
   
   get showNoMatches(): boolean {
-    return !!this.searchText && (!this.matches || !this.matches.length);
+    return !! (this.searchText && (!this.matches || !this.matches.length));
   }
   
   addToHistory(match: string) {
@@ -97,7 +100,7 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get matches(): string[] {
-    return this.fuzzySearch.getMatches(this.options, this.searchText);
+    return this.searchText ? this.fuzzySearch.getMatches(this.options, this.searchText) : this.options;
   }
 
 }
