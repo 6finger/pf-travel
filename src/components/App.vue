@@ -1,7 +1,7 @@
 <template>
   <main>
 
-    <section>
+    <section class="header">
       <div class="container-small text-center">
         <h1 class="text-huge">Trip Sorter</h1>
       </div>
@@ -42,6 +42,8 @@
         </div>
       </div>
     </section>
+
+    <section class="footer"></section>
 
   </main>
 </template>
@@ -144,6 +146,8 @@ label.label {
 }
 .mid-section {
   padding: 1em 0;
+  // box-shadow: inset 0 0 25px #246476;
+  // box-shadow: inset 0 -10px 10px -10px rgba(0,0,0,0.4), inset 0 10px 10px -10px rgba(0,0,0,0.4);
 }
 .button-block {
   width: 100%;
@@ -162,6 +166,29 @@ label.label {
 }
 .row.compact *[class^='col']:not(:last-child) {
   padding-right: 7px;
+}
+
+html, body, main {
+  height: 100%;
+}
+main {
+  display: flex;
+  flex-direction: column;
+}
+section {
+  flex: 1 1;
+  overflow-x: auto;
+}
+section.header, section.footer {
+  flex: none;
+  z-index: 100;
+}
+.footer {
+  min-height: 4em;
+  box-shadow: 0 -10px 10px -10px rgba(0,0,0,0.4);
+}
+.header {
+  box-shadow: 0 10px 10px -10px rgba(0,0,0,0.4);
 }
 
 </style>

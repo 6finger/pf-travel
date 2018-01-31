@@ -35,5 +35,8 @@ export default class SearchModeToggleComponent extends Vue {
 <style lang="scss">
 .radio {
   margin-right: 0;
+  label {
+    cursor: pointer;
+  }
 }
 </style>
