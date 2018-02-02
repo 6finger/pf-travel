@@ -43,6 +43,7 @@ import { FuzzySearch } from '../helpers/fuzzySearch';
 export default class SearchSelectComponent extends Vue {
   @Prop() value: string;
   @Prop() options: string[];
+  @Prop() optionsExclude: string[];
   @Prop() label: string;
   @Prop() errorMessage: string;
 
@@ -59,6 +60,14 @@ export default class SearchSelectComponent extends Vue {
   @Watch('searchText')
   onPropertyChanged(newValue: string) {
     this.$emit('input', newValue);
+  }
+
+  get availableOptions(): string[] {
+    return this.options && this.options.length ?
+      this.options.filter((option) => {
+        return this.optionsExclude && this.optionsExclude.indexOf(option) == -1
+      }) :
+      [];
   }
   
   get lastMatches(): string[] {
@@ -86,7 +95,7 @@ export default class SearchSelectComponent extends Vue {
   }
 
   get hasPerfectMatch(): boolean {
-    return this.options.indexOf(this.searchText) != -1;
+    return this.availableOptions.indexOf(this.searchText) != -1;
   }
 
   onInputButtonClick() {
@@ -131,7 +140,7 @@ export default class SearchSelectComponent extends Vue {
   
   get matches(): string[] {
     if (this.hasPerfectMatch) return [];
-    return this.searchText ? this.fuzzySearch.getMatches(this.options, this.searchText) : this.options;
+    return this.searchText ? this.fuzzySearch.getMatches(this.availableOptions, this.searchText) : this.availableOptions;
   }
 
 }
