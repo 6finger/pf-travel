@@ -1,0 +1,21 @@
+@import '~sierra-library/src/variables';
+
+$border-radius:  3px;
+$font-size-base-large: 20px;
+
+$z-index-lvl1: 1;
+$z-index-lvl2: 10;
+$z-index-lvl3: 100;
+
+$gutter-width: 15px;
+$small-gutter-width: floor($gutter-width/2);
+
+$content-padding: 10px;
+$content-padding-md: 7px;
+$content-padding-sm: 5px;
+
+$margin-base: 1em;
+$margin-xs: 0.2em;
+
+$shadow-size-base: 10px;
+$shadow-color: rgba(0, 0, 0, 0.4);

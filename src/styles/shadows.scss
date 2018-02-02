@@ -1,0 +1,9 @@
+@import 'variables';
+
+.shadow-top {
+  box-shadow: 0 (-$shadow-size-base) $shadow-size-base (-$shadow-size-base) $shadow-color;
+}
+
+.shadow-bottom {
+  box-shadow: 0 $shadow-size-base $shadow-size-base (-$shadow-size-base) $shadow-color;
+}

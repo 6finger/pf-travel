@@ -1,0 +1,28 @@
+@import 'variables';
+
+.radio {
+  margin-right: 0;
+  label {
+    cursor: pointer;
+  }
+}
+
+.form-collapse {
+  label.label {
+    font-size: $font-size-base;
+    margin-bottom: $margin-xs;
+  }
+
+  .item.button {
+    width: 3.3em;
+    padding: $content-padding $gutter-width;
+  }
+    
+  .text-error {
+    margin-top: 0;
+  }
+}
+
+.error .form-collapse {
+  margin-bottom: $margin-xs;
+}

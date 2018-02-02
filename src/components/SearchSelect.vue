@@ -3,20 +3,20 @@
 
     <label :for="id" class="label">{{label}}</label>
     
-    <div class="form-collapse">
+    <div class="form-collapse pos-rel">
     
       <div :class="{error: errorMessage}" class="input item item-main">
         <input v-model.trim="searchText" type="text" :id="id" @input="open" @focus="open" ref="searchInput" placeholder="Please enter a city" class="input full-width">
       </div>
       
-      <div v-if="showItems" class="matches border-right border-left border-bottom">
-        <div v-if="showNoMatches" class="select-item border-bottom text-gray">No matches found</div>
-        <div v-if="showLastMatches" class="select-item border-bottom text-gray">Recently selected</div>
-        <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="select-item border-bottom match">
+      <div v-if="showItems" class="matches list">
+        <div v-if="showNoMatches" class="list-item heading text-gray">No matches found</div>
+        <div v-if="showLastMatches" class="list-item heading text-gray">Recently selected</div>
+        <div v-if="showLastMatches" v-for="match in lastMatches" :key="match+'-recent'" @click="selectMatch(match)" class="list-item action">
           {{match}}
         </div>
-        <div v-if="showAll && showLastMatches" class="select-item border-bottom text-gray">All cities</div>
-        <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="select-item border-bottom match">
+        <div v-if="showAll && showLastMatches" class="list-item heading text-gray">All cities</div>
+        <div v-for="match in matches" :key="match" @click="selectMatch(match)" class="list-item action">
           {{match}}
         </div>
       </div>
@@ -147,61 +147,33 @@ export default class SearchSelectComponent extends Vue {
 </script>
 
 <style lang="scss">
-.item.button {
-  width: 3.3em;
-  padding: 10px 15px;
-}
-label.label {
-  font-size: 14px;
-  margin-bottom: 0.2em;
-}
-.text-error {
-  margin-top: 0;
-}
-.error .form-collapse {
-  margin-bottom: 0.2em;
-}
-.matches {
-  border-radius: 0 0 3px 3px;
-  position: absolute;
+
+@import '../styles/variables';
+
+@mixin drop-from-bottom {
   top: 100%;
-  z-index: 10;
   left: 0;
   right: 0;
+  position: absolute;
+}
+
+.matches {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+  @include drop-from-bottom;
+  z-index: $z-index-lvl2;
   &::after {
     content: '';
-    height: 1em;
+    height: $margin-base;
     display: block;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    box-shadow: inset 0 6px 5px -4px rgba(0, 0, 0, 0.4);
+    @include drop-from-bottom;
+    box-shadow: inset 0 6px 5px -4px $shadow-color;
   }
 }
-.select-item:last-child {
-  border-bottom: none;
-}
-.select-item {
-  padding: 5px 10px;
-  background-color: #34495e;
-}
-.select-item.text-gray {
-  background-color: #2b3d4e;
-}
-.select-item.match {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  cursor: pointer;
-  &:hover, &:focus {
-    background-color: #46637f;
-  }
-}
-.form-collapse {
-  position: relative;
-}
+
 .show-items .form-collapse {
-  box-shadow: 0 0 10px 3px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px 3px $shadow-color;
   .item:first-child {
     border-bottom-left-radius: 0;
   }

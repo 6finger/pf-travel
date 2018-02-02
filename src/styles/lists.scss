@@ -1,0 +1,41 @@
+@import 'variables';
+
+$list-bg-color: $brand-light;
+$list-bg-color-lighter: lighten($list-bg-color, 5%);
+$list-bg-color-darker: darken($list-bg-color, 5%);
+$border-width: 1px;
+
+.list {
+  border-radius: $border-radius;
+  border: $border-width solid $border-color;
+}
+
+.list-item {
+  padding: $content-padding;  
+  border-bottom: $border-width solid $border-color;  
+  background-color: $list-bg-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.heading {
+    background-color: $list-bg-color-darker;
+    padding: $content-padding-sm $content-padding;
+  }
+
+  &.compact {
+    padding: $content-padding-md $content-padding;
+  }
+
+  &.action {
+    cursor: pointer;
+    &:hover, &:focus {
+      background-color: $list-bg-color-lighter;
+    }
+  }
+
+  &.even {
+    background-color: $list-bg-color-darker;
+  }
+}

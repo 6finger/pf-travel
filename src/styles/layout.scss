@@ -1,0 +1,47 @@
+@import 'variables';
+
+html, body, main {
+  height: 100%;
+}
+
+.mid-section .container-small {
+  padding: $gutter-width;
+}
+
+.row.compact {
+  *[class^='col']:not(:first-child) {
+    padding-left: $small-gutter-width;
+  }
+  *[class^='col']:not(:last-child) {
+    padding-right: $small-gutter-width;
+  }
+}
+
+section.header, section.footer {
+  z-index: $z-index-lvl3;
+}
+section.footer {
+  min-height: 3em;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-content {
+  flex: 1 1;
+  overflow-x: auto;
+}
+
+.flex-none {
+  flex: none;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.pos-rel {
+  position: relative;
+}

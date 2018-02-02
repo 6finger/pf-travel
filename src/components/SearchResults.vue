@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="results bordered">
-      <div v-if="!results.length" class="result">
+    <div class="list">
+      <div v-if="!results.length" class="result list-item">
         No connection found between <strong>{{cityFrom}}</strong> and <strong>{{cityTo}}</strong>
       </div>
-      <div v-if="results.length" v-for="(deal, index) in results" :key="deal.reference" class="aligner-space-between result border-bottom" :class="{even: index % 2 == 1}">
+      <div v-if="results.length" v-for="(deal, index) in results" :key="deal.reference" class="result list-item compact aligner-center-vertical aligner-space-between" :class="{even: index % 2 == 1}">
         <div>
           <div class="cities">
             <strong>{{deal.departure}}</strong>
@@ -22,8 +22,8 @@
         <div class="price">{{getDealPrice(deal)}} {{currency}}</div>
       </div>
     </div>
-    <div v-if="results.length" class="results summary bordered">
-      <div class="result text-primary aligner-space-between">
+    <div v-if="results.length" class="list summary">
+      <div class="result list-item text-primary text-light aligner-space-between aligner-center-vertical">
         <div>Total</div>
         <div>{{searchResultsSummary.time.h}}h {{searchResultsSummary.time.m}}m</div>
         <div>{{searchResultsSummary.price}} {{currency}}</div>
@@ -78,27 +78,19 @@ export default class SearchResultsComponent extends Vue {
 </script>
 
 <style lang="scss">
-.results {
-  border-radius: 3px;
-  margin-bottom: 1em;
+
+@import '../styles/variables';
+
+.list {
+  margin-bottom: $margin-base;
 }
-.result:last-child {
-  border-bottom: none;
-}
-.result {
-  align-items: center;
-  padding: 7px 10px;
-  background-color: #34495e;
-  &.even {
-    background-color: #2b3d4e;
-  }
-}
+
 .cities, .price {
-  font-size: 15px;
+  font-size: $font-size-base-medium;
 }
-.summary .result {
-  font-size: 20px;
-  font-weight: 300;
-  padding: 10px 10px;
+
+.summary {
+  font-size: $font-size-base-large;
 }
+
 </style>
