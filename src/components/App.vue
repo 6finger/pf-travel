@@ -31,7 +31,7 @@
 
     <section :class="{hidden: isEditing}" class="background-dark mid-section">
       <div class="container-small">
-        <search-results-component :results="searchResults" :currency="currency" />
+        <search-results-component :results="searchResults" :currency="currency" :cityFrom="cityFrom" :cityTo="cityTo"/>
         <div class="row">
           <div class="col-xs-12">
             <button @click="reset" class="button button-block button-primary">
@@ -138,26 +138,18 @@ export default class AppComponent extends Vue {
 .hidden {
   display: none !important;
 }
-label.label {
-  margin-bottom: 0.2em;
-}
 .text-huge {
   margin-bottom: 0.6em;
 }
-.mid-section {
-  padding: 1em 0;
+.mid-section .container-small{
+  padding: 15px;
 }
 .button-block {
   width: 100%;
 }
-.text-error {
-  margin-top: 0;
-}
-.error .form-collapse {
-  margin-bottom: 0.2em;
-}
 .button {
   border-radius: 3px;
+  margin: 0;
 }
 .row.compact *[class^='col']:not(:first-child) {
   padding-left: 7px;
@@ -181,7 +173,7 @@ section.header, section.footer {
   z-index: 100;
 }
 .footer {
-  min-height: 4em;
+  min-height: 3em;
   box-shadow: 0 -10px 10px -10px rgba(0,0,0,0.4);
 }
 .header {

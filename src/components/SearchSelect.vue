@@ -142,6 +142,16 @@ export default class SearchSelectComponent extends Vue {
   width: 3.3em;
   padding: 10px 15px;
 }
+label.label {
+  font-size: 14px;
+  margin-bottom: 0.2em;
+}
+.text-error {
+  margin-top: 0;
+}
+.error .form-collapse {
+  margin-bottom: 0.2em;
+}
 .matches {
   border-radius: 0 0 3px 3px;
   position: absolute;
@@ -165,7 +175,7 @@ export default class SearchSelectComponent extends Vue {
 }
 .select-item {
   padding: 5px 10px;
-  background-color: #34495e;  
+  background-color: #34495e;
 }
 .select-item.text-gray {
   background-color: #2b3d4e;
