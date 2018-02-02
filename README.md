@@ -17,7 +17,7 @@ app will be running on localhost:8080
 
 ## build
 ```sh
-SET NODE_ENV="production"
+SET NODE_ENV=production
 npm run build
 ```
 all assets will be in /dist folder
