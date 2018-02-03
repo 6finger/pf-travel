@@ -75,7 +75,10 @@ module.exports = {
           return Buffer.from(content.toString().replace(/\.\/dist\//g, ''));
         }
       }
-    ])
+    ]),
+    new CopyWebpackPlugin([
+      { from: 'img', to: 'img' }
+    ]), 
   ],
   performance: {
     hints: false
