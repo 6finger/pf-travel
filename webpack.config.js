@@ -77,7 +77,8 @@ module.exports = {
       }
     ]),
     new CopyWebpackPlugin([
-      { from: 'img', to: 'img' }
+      { from: 'img', to: 'img' },
+      { from: 'response.json', to: 'response.json' }
     ]), 
   ],
   performance: {

@@ -55,7 +55,15 @@
       </div>
     </section>
 
-    <section class="footer flex-none shadow-top"></section>
+    <section class="footer flex-none shadow-top">
+      <div class="spinner" :class="{hidden: !loading}">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+    </section>
 
   </main>
 </template>
@@ -70,25 +78,41 @@ import { ResponseType, DealType, SearchModeType } from "../types";
 import { getDealPrice, getDealTime } from '../helpers/format';
 import { filterDisctinct } from '../helpers/filter';
 import { findTrip } from '../helpers/pathfinding';
-import data from '../response.json';
+import { mapGetters, mapActions } from 'vuex';
+import { GET_DEALS, GET_CURRENCY, FETCH_DATA } from '../store/actions';
 
 @Component({
   components: {
     SearchSelectComponent,
     SearchModeToggleComponent,
     SearchResultsComponent
-  }
+  },
+  computed: {
+    ...mapGetters({
+      deals: GET_DEALS,
+      currency: GET_CURRENCY
+    })
+  },
+  methods: {
+    ...mapActions({
+      fetchData: FETCH_DATA
+    })
+  },
 })
 export default class AppComponent extends Vue {
   @Prop() cityFrom: string = '';
   @Prop() cityTo: string = '';
   @Prop() searchMode: SearchModeType = SearchModeType.Price;
   
-  get deals(): DealType[] { return (<ResponseType>data).deals; }
-  get currency(): string { return (<ResponseType>data).currency; }
+  // mapped by vuex
+  deals: DealType[];
+  currency: string;
+  fetchData: Function;
+  
   get departures(): string[] { return this.getDistinctCitiesFromDeals('departure'); } 
   get arrivals(): string[]  { return this.getDistinctCitiesFromDeals('arrival'); }
   editing: boolean = true;
+  loading: boolean = true;
   cityFromErrorMessage: string = '';
   cityToErrorMessage: string = '';
  
@@ -110,6 +134,10 @@ export default class AppComponent extends Vue {
 
   get valid(): boolean {
     return !this.cityFromErrorMessage && !this.cityToErrorMessage;
+  }
+
+  created () {
+    this.fetchData().then(() => this.loading = false);
   }
   
   validate() {
@@ -168,5 +196,6 @@ export default class AppComponent extends Vue {
 @import '../styles/forms';
 @import '../styles/shadows';
 @import '../styles/lists';
+@import '../styles/spinner';
 
 </style>
