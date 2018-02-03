@@ -27,4 +27,4 @@ you can run the app locally by opening index.html
 ```sh
 npm run deploy
 ```
-deploys to https://6finger.github.io/pf-travel/index.html
+deploys to https://6finger.github.io/pf-travel
