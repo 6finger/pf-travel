@@ -15,9 +15,9 @@ export function findTrip(deals: DealType[], from: string, to: string, searchMode
     graphMap[deal.departure] = graphMap[deal.departure] || {};
     dealsMap[deal.departure] = dealsMap[deal.departure] || {};
 
-    // There can be multiple links between cities but we are interested only in the one with smallest weight.
-    // We are looking for a path with the smallest weight. For any two paths that differ
-    // only in one edge, the path using the edge with smaller weight will have smaller weight in total.
+    // There can be multiple links between cities but we are interested only in the one with the smallest weight.
+    // We can do that because for any two paths that differ only in one edge,
+    // the path using the edge with smaller weight will have smaller weight in total.
     var weight = searchMode === SearchModeType.Price ? getDealPrice(deal) : getDealTime(deal);
     var currentWeight = graphMap[deal.departure][deal.arrival];
     if (currentWeight == null || weight < currentWeight) {
