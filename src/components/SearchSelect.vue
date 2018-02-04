@@ -65,7 +65,7 @@ export default class SearchSelectComponent extends Vue {
   get availableOptions(): string[] {
     return this.options && this.options.length ?
       this.options.filter((option) => {
-        return this.optionsExclude && this.optionsExclude.indexOf(option) == -1
+        return !this.isExcluded(option);
       }) :
       [];
   }
@@ -83,7 +83,7 @@ export default class SearchSelectComponent extends Vue {
   }
   
   get showNoMatches(): boolean {
-    return !! (this.searchText && !this.hasPerfectMatch && !this.hasMatches);
+    return !! (this.searchText && !this.hasPerfectMatch && !this.hasMatches && !this.isExcluded(this.searchText));
   }
 
   get hasMatches(): boolean {
@@ -96,6 +96,10 @@ export default class SearchSelectComponent extends Vue {
 
   get hasPerfectMatch(): boolean {
     return this.availableOptions.indexOf(this.searchText) != -1;
+  }
+
+  isExcluded(searchText: string): boolean {
+    return this.optionsExclude && this.optionsExclude.indexOf(searchText) != -1;
   }
 
   onInputButtonClick() {
@@ -127,7 +131,8 @@ export default class SearchSelectComponent extends Vue {
   }
 
   focusInput() {
-    (<any>this).$refs.searchInput.focus();
+    var input = this.$refs.searchInput;
+    if (input instanceof HTMLElement) input.focus();
   }
 
   get isOpen(): boolean {
